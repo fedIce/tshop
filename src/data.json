@@ -1,0 +1,277 @@
+{
+    "database":{
+        "gender":[
+            {
+                "title":"Men",
+                "id": 1,                
+                "value": "male"
+            },
+            {
+                "title":"Women",
+                "id": 2,                
+                "value": "female"
+            }            
+        ],
+        "size":[
+            {
+                "id": 1,                
+                "title":"Small",
+                "value": "sm"
+            },
+            {
+                "id": 2,                
+                "title":"Smaller",
+                "value": "xs"
+            },
+            {
+                "id": 3,                
+                "title":"Extra Small",
+                "value": "xxs"
+            },
+            {
+                "id": 4,                
+                "title":"Medium",
+                "value": "md"
+            } ,
+            {
+                "id": 5,                
+                "title":"Large",
+                "value": "lg"
+            },
+            {
+                "id": 6,                
+                "title":"Very Large",
+                "value": "xl"
+            },
+            {
+                "id": 7,                
+                "title":"Extra Large",
+                "value": "xxl"
+            }       
+        ],
+        "category":[
+            {
+                "title":"New In",
+                "id":1,                
+                "value":"newin"
+            },
+            {
+                "title":"clothes",
+                "id":2,                
+                "value":"clothes"
+            },
+            {
+                "title":"Shoes",
+                "id":3,                
+                "value":"shoes"
+            },
+            {
+                "title":"Accessories",
+                "id":4,                
+                "value":"accessories"
+            },
+            {
+                "title":"Sports",
+                "id":5,                
+                "value":"sports"
+            },
+            {
+                "title":"ActiveWear",
+                "id":6,                
+                "value":"activewear"
+            },
+            {
+                "title":"Outlet",
+                "id":7,                
+                "value":"outlet"
+            }
+        ],
+        "products":[
+            {
+                "id": 1,
+                "image": "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/0e79caa6-f960-4856-9619-7334ae32a438/dri-fit-indy-ultrabreathe-womens-light-support-padded-strappy-sports-bra-BZpR6k.png",
+                "title":"Indi Sports Bra",
+                "price": 13000.34,
+                "gender":"female",
+                "categories": ["activewear","clothes", "sports","newin"],
+                "created_at": "wiggkkekke",
+                "sizes": [
+                    {
+                        "size":"sm",
+                        "colors":["red", "yellow", "green" ]
+                    },
+                    {
+                        "size":"md",
+                        "colors":["grey", "white", "green" ]
+                    },
+                    {
+                        "size":"lg",
+                        "colors":["red"]
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "image": "https://static.nike.com/a/images/t_default/dc0a2885-c0a9-40ad-b0fb-b3f4322c8822/dri-fit-indy-womens-light-support-padded-v-neck-sports-bra-bn8KwW.png",
+                "title":"Indi Kinetic Sports Bra",
+                "price": 10000,
+                "gender":"female",
+                "categories": ["activewear","clothes", "sports"],
+                "created_at": "wiggkkekke",
+                "sizes": [
+                    {
+                        "size":"xs",
+                        "colors":["red", "yellow", "green" ]
+                    },
+                    {
+                        "size":"xxs",
+                        "colors":["blue", "white", "green" ]
+                    },
+                    {
+                        "size":"lg",
+                        "colors":["pink"]
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "image": "https://www.e-tennis.com/pub/media/catalog/product/cache/f5f3da80ad7b670245aea7e970662954/8/7/878614-321-nike_indy_women_s_sports_bra-z.jpg",
+                "title":"Nike Indy Women's Sports Bra",
+                "price": 12000.99,
+                "discount_price": 700.00,
+                "gender":"female",
+                "categories": ["sports","clothes", "sports"],
+                "created_at": "wiggkkekke",
+                "sizes": [
+                    {
+                        "size":"xs",
+                        "colors":["red", "yellow", "green" ]
+                    },
+                    {
+                        "size":"xxs",
+                        "colors":["blue", "white", "green" ]
+                    },
+                    {
+                        "size":"lg",
+                        "colors":["blue"]
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "image": "https://i.pinimg.com/564x/11/aa/cc/11aacc9f44527d513acdf923778a7abf--support-bra-bandeau.jpg",
+                "title":"Nike Pro Indy Cool Women's Light Support Bra",
+                "price": 18900.29,
+                "gender":"female",
+                "categories": ["activewear","clothes", "sports","newin"],
+                "created_at": "wiggkkekke",
+                "sizes": [
+                    {
+                        "size":"xs",
+                        "colors":["red", "yellow", "green" ]
+                    },
+                    {
+                        "size":"xxs",
+                        "colors":["blue", "white", "green" ]
+                    },
+                    {
+                        "size":"lg",
+                        "colors":["grey"]
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "image": "https://m.media-amazon.com/images/I/71vxJFHUQNL._AC_UX679_.jpg",
+                "title":"NIKE Women's Indy Logo Sport-bh Woman Sport-bh",
+                "price": 22400.00,
+                "gender":"female",
+                "categories": ["activewear","clothes", "sports","newin"],
+                "created_at": "wiggkkekke",
+                "sizes": [
+                    {
+                        "size":"sm",
+                        "colors":["red", "yellow", "green" ]
+                    },
+                    {
+                        "size":"md",
+                        "colors":["black", "white" ]
+                    },
+                    {
+                        "size":"lg",
+                        "colors":["violet"]
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "image": "https://cdn.shopify.com/s/files/1/0982/3148/products/indie-python-charcoal-sports-bra-151280.jpg?v=1644893750",
+                "title":"Indie Python (Charcoal) Sports Bra",
+                "price": 17000,
+                "gender":"female",
+                "categories": ["activewear","clothes", "sports"],
+                "created_at": "wiggkkekke",
+                "sizes": [
+                    {
+                        "size":"sm",
+                        "colors":["red", "yellow", "green" ]
+                    },
+                    {
+                        "size":"md",
+                        "colors":["black", "white" ]
+                    },
+                    {
+                        "size":"lg",
+                        "colors":["violet"]
+                    }
+                ]
+            },
+            {
+                "id": 7,
+                "image": "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/f276e2c7-71e6-42c4-91fc-201efe7d170d/dri-fit-indy-womens-light-support-padded-v-neck-sports-bra-tcglhV.png",
+                "title":"Nike Dri-FIT Indy Women's Light-Support Padded V-Neck Sports Bra.",
+                "price": 16600.00,
+                "gender":"female",
+                "categories": ["activewear","clothes", "sports"],
+                "created_at": "wiggkkekke",
+                "sizes": [
+                    {
+                        "size":"sm",
+                        "colors":["red", "yellow", "green" ]
+                    },
+                    {
+                        "size":"md",
+                        "colors":["black", "white" ]
+                    },
+                    {
+                        "size":"lg",
+                        "colors":["violet"]
+                    }
+                ]
+            },
+            {
+                "id": 8,
+                "image": "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/41e71840-147e-4ab4-98b4-5213a8d0671c/dri-fit-indy-womens-light-support-padded-v-neck-sports-bra-tcglhV.png",
+                "title":"Womens Nike Indy Sports Bras. Nike.com",
+                "price": 13000,
+                "gender":"female",
+                "categories": ["activewear","clothes", "sports","newin"],
+                "created_at": "wiggkkekke",
+                "sizes": [
+                    {
+                        "size":"xxl",
+                        "colors":["red", "yellow", "green" ]
+                    },
+                    {
+                        "size":"lg",
+                        "colors":["black", "white" ]
+                    },
+                    {
+                        "size":"md",
+                        "colors":["violet"]
+                    }
+                ]
+            }   
+        ]
+    }
+}
