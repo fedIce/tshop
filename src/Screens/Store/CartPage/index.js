@@ -1,6 +1,6 @@
 import { MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/outline'
 import React, { useEffect, useState } from 'react'
-import { Database, numberWithCommas } from '../../../databse'
+import { Database, numberWithCommas, User } from '../../../databse'
 import { useCart } from '../../../GlobalContexts/ChartContext'
 import CheckOut from './CheckOut'
 
@@ -47,12 +47,23 @@ const OrderCard = ({id, title, size, color, image, prize, count}) => {
 const CartPage = () => {
     const cart = useCart()
     const db = new Database()
+    const user = new User()
+
 
     const total = cart.getTotal()
     const delivery = db.getDeliveryCost(1)
     const discount = cart.getDiscount()
     console.log(cart.cart)
     console.log(discount)
+
+    useEffect(() => {
+        if(window.location.href.includes('?')){
+            const path = window.location.href.split('reference=')[1]
+            user.verify_payment(path)
+        }
+    },[])
+
+
     return (
         <div className='w-full h-full flex'>
             <div className='w-[70%] h-full'>

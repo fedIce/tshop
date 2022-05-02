@@ -197,6 +197,22 @@ class User {
             return response
         })
     }
+
+    verify_payment(ref){
+        return fetch('http://127.0.0.1:5000/transaction/verify?ref='+ref, {
+            method: "GET",
+            // mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': true,
+            }
+        }).then(async (resp) => {
+            let response = await resp.json()
+            // response = response[3]
+            console.log("URL: ", response)
+            return response
+        })
+    }
 }
 
 export {
