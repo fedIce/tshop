@@ -5,9 +5,12 @@ import { Database, numberWithCommas } from '../../../../databse'
 
 const db = new Database()
 
-const ProductListItem = ({ product, setProducts }) => {
+const ProductListItem = ({ product, setProducts, handleEdit }) => {
     const handleDelete = () => {
-        setProducts(db.deleteProduct(product.id))
+        db.deleteProduct(product.id).then(async () => {
+            const pd = await db.getProducts()
+            setProducts(pd)
+        })
     }
     return (
         <div className='flex justify-between p-5 items-center hover:bg-gray-200'>
@@ -25,7 +28,7 @@ const ProductListItem = ({ product, setProducts }) => {
                 </div>
             </div>
             <div className='flex space-x-4 items-center self-end'>
-                <span className='p-2 text-white rounded cursor-pointer bg-green-500'><PencilAltIcon className='w-5 h-5' /></span>
+                <span onClick={() => handleEdit(product)} className='p-2 text-white rounded cursor-pointer bg-green-500'><PencilAltIcon className='w-5 h-5' /></span>
                 <span onClick={() => handleDelete()} className='p-2 text-white rounded cursor-pointer bg-red-500'><TrashIcon className='w-5 h-5' /></span>
             </div>
         </div>

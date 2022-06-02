@@ -6,16 +6,35 @@ import ProductListItem from './ProductListItem'
 
 
 const data_store = new Database()
-let _products = data_store.getProducts()
 
 
 const Products = () => {
 
-    const [products, setProducts] = useState(_products)
-
+    const [products, setProducts] = useState(null)
+    const [editData, setEditData] = useState(null)
     useEffect(() => {
-        setProducts(data_store.getProducts())
-    },[data_store.products, setProducts])
+        (async () => await data_store.getProducts().then(res => {
+            setProducts(res)
+        }))();
+    }, [])
+
+    const updateProducts = async (data) => {
+        setProducts(data)
+    }
+
+    const handleEdit = (data) => {
+        setEditData({
+            id: data.id,
+            name: data.title,
+            image: data.image,
+            price: data.price,
+            gender: data.gender,
+            category: data.categories,
+            discount: data.discount_price,
+            sizes: data.sizes
+        })
+
+    }
 
     return (
         <div className='flex h-full overflow-auto px-5'>
@@ -23,14 +42,17 @@ const Products = () => {
                 Products
                 <div className='flex flex-col'>
                     {
-                        products.map((product, indx) => {
-                            return <ProductListItem key={indx} product={product} setProducts={setProducts} />
-                        })
+                        Array.isArray(products) ?
+                            products?.map((product, indx) => {
+                                return <ProductListItem key={indx} product={product} setProducts={setProducts} handleEdit={handleEdit} />
+                            })
+                            :
+                            <div>{JSON.stringify(products)}</div>
                     }
                 </div>
             </div>
             <div className='w-[40%] h-full overflow-auto scrollbar-sm pb-[100px]'>
-                <AddForm setProducts={setProducts} />
+                <AddForm setProducts={updateProducts} editData={editData} />
             </div>
         </div>
     )

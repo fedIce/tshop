@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import PCard1 from '../../../Components/ProductCards/PCard1'
 import { Database } from '../../../databse'
@@ -8,7 +8,16 @@ const ProductCategoryPage = () => {
     const database = new Database()
     const { category } = useParams()
     const gender = useGenderSwitch()
-    const _category = database.fetchCategory(category, gender.gender)
+    const [_category, setCategory] = useState(null)
+
+
+    useEffect(() => {
+        (async () => {
+            const nIn = await database.fetchCategory(category, gender.gender)
+            setCategory(nIn)
+        })();
+    }, [gender.gender, category])
+
 
     return (
         <div>
@@ -20,7 +29,7 @@ const ProductCategoryPage = () => {
                         <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 items-center gap-y-4 pb-[150px]'>
                             {
 
-                                _category.map((item, key) => {
+                                _category?.map((item, key) => {
                                     return <PCard1 id={item.id} title={item.title} image={item.image} price={item.price} discount_price={item.discount_price} key={key} />
                                 })
 

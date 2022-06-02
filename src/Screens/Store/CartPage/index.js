@@ -9,7 +9,7 @@ const OrderCard = ({id, title, size, color, image, prize, count}) => {
     const cart = useCart()
 
 
-    return (
+    return id && (
         <div className='flex space-x-3 p-5'>
             <div className='h-[95%] w-[35%]'>
                 <img src={image} className='w-full h-full object-cover rounded-xl' />
@@ -53,8 +53,7 @@ const CartPage = () => {
     const total = cart.getTotal()
     const delivery = db.getDeliveryCost(1)
     const discount = cart.getDiscount()
-    console.log(cart.cart)
-    console.log(discount)
+
 
     useEffect(() => {
         if(window.location.href.includes('?')){

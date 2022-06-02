@@ -48,9 +48,9 @@ function App(props) {
                                     <Dashboard />
                                 </RequireAuth>
                             } >
-                                <Route path="main" element={<Main/>} />
+                                <Route path="main" element={<Products />} />
                                 <Route path="order" element={<p>Order</p>} />
-                                <Route path="product" element={<Products />} />
+                                <Route path="product" element={<Main />} />
                                 <Route path="chats" element={<p>Message</p>} />
                             </Route>
                         </Routes>

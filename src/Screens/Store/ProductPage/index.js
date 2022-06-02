@@ -14,28 +14,43 @@ const ProductPage = () => {
     const cart = useCart()
     let { id } = useParams();
     const database = new Database()
-    const product = database.fetchProductById(id)
-    const cartProduct = {
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        count: parseInt(count),
-        color: color,
-        size: colors?.size,
-        image: product.image
-    }
+    const [product, setProducts] = useState(null)
+    const [cartProduct, setCartProduct] = useState(null)
 
-    if (product.discount_price) {
-        console.log(product.discount_price)
-        cartProduct["discount"] = product.discount_price
-    }
 
-    let inCart = cart.cart.some(i => i.id === product.id)
+
+    let inCart = cart.cart.some(i => i.id === product?.id)
 
     useEffect(() => {
-        setColors(product.sizes[0])
-        setColor(product?.sizes[0].colors[0])
+        (async () => await database.fetchProductById(id).then((res) => {
+            setProducts(res)
+        }))();
     }, [])
+
+    useEffect(() => {
+        (async () => {
+            if(product){
+                setCartProduct({
+                    id: product?.id,
+                    title: product?.title,
+                    price: product?.price,
+                    count: parseInt(count),
+                    color: color,
+                    size: colors?.size,
+                    image: product?.image
+                })
+            }
+        })().then(() => {
+            if (cartProduct) {
+                if (product?.discount_price) {
+                    setCartProduct({ ...cartProduct, discount: product.discount_price })
+                }
+
+                setColors(product?.sizes[0])
+                setColor(product?.sizes[0].colors[0])
+            }
+        })
+    }, [product])
 
     const addProductToCart = () => {
         setItem(true)

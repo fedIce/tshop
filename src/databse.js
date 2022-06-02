@@ -1,8 +1,26 @@
+import { updateDoc } from 'firebase/firestore/lite';
+import {
+    auth,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    updateCurrentUser,
+    getDoc,
+    getDocs,
+    setDoc,
+    doc,
+    query,
+    where,
+    collection,
+    deleteDoc,
+    addDoc,
+    firestore
+}
+    from './config/firebase';
 
 let db = require('./data.json')
 
-export const numberWithCommas =(x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+export const numberWithCommas = (x) => {
+    return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 class Database {
@@ -14,19 +32,38 @@ class Database {
         this.length = this.products.length
     }
 
-    loadStoreFront(gender) {
-        console.log(this.products)
-        const v = this.products.filter(product => product.gender === gender)
-        return v
+    loadStoreFront = async (gender) => {
+        const prod = [];
+
+        const q = query(collection(firestore, "Products"), where("gender", "==", gender));
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            prod.push({ id: doc.id, ...doc.data() })
+        });
+
+        return prod
     }
 
-    getProducts() {
+    getProducts = async () => {
+        const prod = []
+        const querySnapshot = await getDocs(collection(firestore, "Products"));
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            prod.push({ id: doc.id, ...doc.data() })
+        });
+        this.products = prod
         return this.products
     }
 
-    fetchProductById(id) {
-        const v = this.products.filter(product => product.id === parseInt(id))
-        return v[0]
+    fetchProductById = async (id) => {
+        const docRef = doc(firestore, "Products", id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() }
+        }
+        return null
     }
 
     getCategories() {
@@ -41,17 +78,31 @@ class Database {
         return db.database.size
     }
 
-    fetchCategory(category, gender = 'female') {
-        let v = this.products.filter((i) => i.categories.includes(category))
-        v = v.filter(i => i.gender === gender)
-        return v
+    fetchCategory = async (category, gender = 'female') => {
+        return await this.loadStoreFront(gender).then((res) => {
+            let v = res.filter((i) => i.categories.includes(category))
+            return v
+        })
     }
 
     getDeliveryCost(indx) {
         return [20, 50, 100][indx]
     }
 
-    addProduct(product) {
+    // addAllProd(){
+    //     db.database.products.map(async i => {
+    //         await this.addProduct(i)
+    //     })
+    // }
+
+    addProduct = async (product) => {
+
+        const prodRef = collection(firestore, 'Products')
+        addDoc(prodRef, {
+            ...product
+        })
+
+
         const id = this.length + 1
         product["id"] = id
         this.products.push(product)
@@ -59,9 +110,15 @@ class Database {
         return this.products
     }
 
-    deleteProduct(id) {
-        this.products = this?.products.filter(item => item.id !== id)
-        return this.products
+    deleteProduct = async (id) => {
+        const prodRef = doc(firestore, "Products", id)
+        return  await deleteDoc(prodRef)
+    }
+
+    updateProduct = async (id, data) => {
+        const userRef = doc(firestore, "Products", id)
+        await updateDoc(userRef, data)
+        return data
     }
 }
 
@@ -85,10 +142,9 @@ class UserDB {
     }
 
     update_user(id, data) {
-        this.users[id] = {
-            ...this.users[id],
-            ...data
-        }
+        const userRef = doc(firestore, "Users", id)
+        updateDoc(userRef, data)
+        return data
     }
 
 
@@ -105,24 +161,71 @@ class User {
         this.email = null
         this.phone = null
         this.password = null
-        this.loggedIn = false
+        this.loggedIn = auth.currentUser ? true : false
+    }
+
+    fb_signout() {
+        auth.signOut()
+    }
+
+    fb_signin(email, password) {
+        return signInWithEmailAndPassword(auth, email, password)
+            .then((response) => {
+                this.fb_load()
+            }).catch((e) => {
+                return this.loginError(JSON.stringify(e))
+            })
+    }
+
+    fb_signup(data) {
+        return createUserWithEmailAndPassword(auth, data.email, data.password)
+            .then((user) => {
+                setDoc(doc(firestore, 'Users', user.user.uid), {
+                    uid: user.user.uid,
+                    email: data.email,
+                    firstname: data.firstname,
+                    lastname: data.lastname
+                })
+                this.fb_load()
+            })
+            .then(() => {
+                updateCurrentUser(auth, {
+                    displayName: data.firstname + ' ' + data.lastname
+                }).catch((e) => {
+                    return this.loginError(JSON.stringify(e))
+                })
+            })
     }
 
     login(email, password) {
-        let person = null
+        let person = null;
         for (const key in this.#db.users) {
             if (this.#db.users.hasOwnProperty(key)) {
                 person = this.#db.users[key]
-                console.log(person)
                 if (person.email === email && person.password === password) {
                     this.loggedIn = true
-                    console.log('LOGGED IN')
                     this.load(person)
                     return
                 }
             }
         }
         return this.loginError("No user with email found")
+
+    }
+
+    fb_load = async () => {
+        const u = auth.currentUser
+        const docRef = doc(firestore, 'Users', u.uid)
+        return await getDoc(docRef).then(user => {
+            this.id = u.uid
+            this.firstname = user.firstname
+            this.lastname = user.lastname
+            this.address = user.address
+            this.email = user.email
+            this.phone = user.phoneNumber
+            this.avatar = user.avatar
+            this.loggedIn = true
+        })
 
     }
 
@@ -163,6 +266,25 @@ class User {
         this.#db.update_user(id, data)
     }
 
+    fb_getuser = async () => {
+        if(!auth.currentUser) return null
+        const u = auth?.currentUser
+        const docRef = doc(firestore, 'Users', u?.uid)
+        const snapShot = await getDoc(docRef)
+        if (snapShot) {
+            this.id = u.uid
+            this.firstname = snapShot.data().firstname
+            this.lastname = snapShot.data().lastname
+            this.address = snapShot.data().address
+            this.email = snapShot.data().email
+            this.phone = snapShot.data().phoneNumber
+            this.avatar = snapShot.data().avatar
+            this.loggedIn = true
+        }
+
+        return snapShot.data()
+    }
+
     get_user() {
         if (!this.loggedIn) return { error: "user is not logged In " }
         return {
@@ -193,13 +315,12 @@ class User {
         }).then(async (resp) => {
             let response = await resp.json()
             response = response[3]
-            console.log("URL: ", response)
             return response
         })
     }
 
-    verify_payment(ref){
-        return fetch('http://127.0.0.1:5000/transaction/verify?ref='+ref, {
+    verify_payment(ref) {
+        return fetch('http://127.0.0.1:5000/transaction/verify?ref=' + ref, {
             method: "GET",
             // mode: 'no-cors',
             headers: {
@@ -209,7 +330,6 @@ class User {
         }).then(async (resp) => {
             let response = await resp.json()
             // response = response[3]
-            console.log("URL: ", response)
             return response
         })
     }

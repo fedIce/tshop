@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { auth, onAuthStateChanged } from '../../config/firebase';
 import { User } from '../../databse';
 import { authProvider, sign_out_user } from '../../functions/authFunctions';
 import { remove_user_data, store_user_data } from '../../store/actions/authActions';
@@ -23,51 +24,55 @@ const AuthContext = React.createContext(inital_user)
 function AuthProvider({ children, currentUser, signOutUser, loginUser, _user }) {
 
 
-    let [user, setUser] = React.useState(currentUser.data ? currentUser.data : null);
+    let [user, setUser] = React.useState(auth.currentUser ? auth.currentUser : null);
     let [user_data, setUserData] = React.useState(currentUser.data ? currentUser.data : null);
     let [error, setError] = React.useState(null);
 
+    useEffect(() => {
+        onAuthStateChanged(auth, async (user) => {
+            setUser(user)
+            const current_user = await user_db.fb_getuser()
+            setUserData(current_user)
+        })
+    }, [auth])
+
     let signin = (newUser, callback) => {
-        const stat = user_db.login(newUser.email, newUser.password)
+        const stat = user_db.fb_signin(newUser.email, newUser.password)
         if (!user_db.loggedIn && stat.error) {
             setError(stat.error)
             setTimeout(() => {
                 setError(null)
             }, 10000)
-            console.log(stat)
             return
         }
         setUser(user_db.loggedIn)
-        setUserData(user_db.get_user())
-        loginUser(user_db.get_user())
+        setUserData(user_db.fb_getuser())
+        loginUser(user_db.fb_getuser())
     };
 
     let signup = (user) => {
-        const stat = user_db.signup(user)
+        const stat = user_db.fb_signup(user)
         if (!user_db.loggedIn && stat.error) {
             setError(stat.error)
             setTimeout(() => {
                 setError(null)
             }, 10000)
-            console.log(stat)
             return
         }
         setUser(user_db.loggedIn)
-        setUserData(user_db.get_user())
-        loginUser(user_db.get_user())
+        setUserData(user_db.fb_getuser())
+        loginUser(user_db.fb_getuser())
     }
 
     let signout = (callback) => {
-        user_db.logout()
+        user_db.fb_signout()
         setUser(null)
         signOutUser()
         setUserData(null)
-        console.log(_user.data, currentUser.data, user_db.loggedIn)
     }
 
     let getuser = (callback) => {
-        const dat = user_db.get_user()
-        console.log(dat)
+        const dat = user_db.fb_getuser()
         return dat
     }
 

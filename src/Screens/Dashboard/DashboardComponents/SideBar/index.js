@@ -27,25 +27,25 @@ const menu = [
         icon: TemplateIcon,
         to:"main"
     },
-    {
-        id: 2,
-        title: "Orders",
-        icon: ClipboardIcon,
-        to:"order"
-    },
-    {
-        id: 3,
-        title: "Products",
-        icon: ViewGridAddIcon,
-        to:"product"
-    },
-    {
-        id: 4,
-        title: "Messages",
-        icon: ChatIcon,
-        to:"chats"
+    // {
+    //     id: 2,
+    //     title: "Orders",
+    //     icon: ClipboardIcon,
+    //     to:"order"
+    // },
+    // {
+    //     id: 3,
+    //     title: "Products",
+    //     icon: ViewGridAddIcon,
+    //     to:"product"
+    // },
+    // {
+    //     id: 4,
+    //     title: "Messages",
+    //     icon: ChatIcon,
+    //     to:"chats"
 
-    },
+    // },
     {
         id: 4,
         title: "Logout",

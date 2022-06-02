@@ -51,9 +51,8 @@ const CheckOut = ({ total }) => {
         const data = {
             address: address,
         }
-        console.log(data)
         auth.setUserData({ ...userData, ...data })
-        user.update_user(userData.id, data)
+        user.update_user(userData.uid, data)
         setEditAddress(!editAddress)
     }
 
@@ -64,7 +63,6 @@ const CheckOut = ({ total }) => {
             lastname: name.split(" ")[name.split(" ").length - 1],
             phone: phone
         }
-        console.log(data)
         auth.setUserData({ ...userData, ...data })
         user.update_user(userData.id, data)
         setEditPersonalDetails(!editPersonalDetails)

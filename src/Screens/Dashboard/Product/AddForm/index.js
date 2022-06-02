@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardFormField from '../../DashboardComponents/DashboardFormField'
 import { DashboardFormDropDownList } from '../../DashboardFormFieldDropList'
 import { Database } from '../../../../databse'
@@ -11,7 +11,7 @@ const productCategory = data_store.getCategories()
 const productSizes = data_store.getSizes()
 
 
-const AddForm = ({ setProducts }) => {
+const AddForm = ({ setProducts, editData }) => {
     const [name, setName] = useState('')
     const [image, setImage] = useState('')
     const [price, setPrice] = useState(0)
@@ -20,6 +20,7 @@ const AddForm = ({ setProducts }) => {
     const [discount, setDiscount] = useState(0)
     const [loading, setLoading] = useState(false)
     const [sizes, setSizes] = useState([])
+    const [editMode, setEditMode] = useState(false)
 
 
     const handleOnSave = () => {
@@ -34,17 +35,43 @@ const AddForm = ({ setProducts }) => {
             sizes: sizes
         }
 
+
         if (discount > 0) {
             data['discount_price'] = parseFloat(discount)
         }
 
         setLoading(true)
-        data_store.addProduct(data)
-        setTimeout(() => {
-            setLoading(false)
-            setProducts(data_store.products)
-        }, 3000)
+        if (editMode) {
+            const id = editData.id
+            data_store.updateProduct(id, data).then(async () => {
+                const pd = await data_store.getProducts()
+                setProducts(pd)
+                setLoading(false)
+
+            })
+        } else {
+            data_store.addProduct(data)
+            setTimeout(() => {
+                setLoading(false)
+                setProducts(data_store.products)
+            }, 3000)
+        }
     }
+
+
+    useEffect(() => {
+        if (editData) {
+            setImage(editData.image)
+            setName(editData.name)
+            setPrice(editData.price)
+            setGender(genderCategory.filter(i => i.value.toLowerCase() === editData.gender.toLowerCase())[0])
+            setCategory(productCategory.filter(i => editData.category.includes(i.value.toLowerCase()))[0])
+            setDiscount(editData.discount? editData.discount : 0)
+            setSizes(editData.sizes)
+
+            setEditMode(true)
+        }
+    }, [editData])
 
 
     return (
