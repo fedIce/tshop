@@ -11,6 +11,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
+
 const store = createStore(RootReducer, applyMiddleware(thunk))
 const persist = persistStore(store)
 

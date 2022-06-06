@@ -2,7 +2,7 @@ import { BellIcon, SearchIcon } from '@heroicons/react/outline'
 import React from 'react'
 
 const DashboardHeader = ({user}) => {
-  return (
+   return (
     <div className='w-full h-16 flex items-center justify-between'>
         <div className='px-5 py-3 text-3xl flex space-x-2 text-gray-600 font-semibold'>
             <span className='font-light'>Welcome,</span>
