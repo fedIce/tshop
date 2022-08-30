@@ -6,13 +6,13 @@ import { getFirestore, collection, getDocs, query, where, getDoc, addDoc, delete
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyA0QHvw2qGHlQk7gOa9sN-CjijXmaWYMXk",
-    authDomain: "t-shop-dfad7.firebaseapp.com",
-    projectId: "t-shop-dfad7",
-    storageBucket: "t-shop-dfad7.appspot.com",
-    messagingSenderId: "717527352703",
-    appId: "1:717527352703:web:346c6d8105b27e1add464a",
-    measurementId: "G-GX1ZTJSLDP"
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTHDOMAIN,
+    databaseURL: process.env.REACT_APP_DATABASE_URL,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_APP_ID
 };
 
 export const app = initializeApp(firebaseConfig);
