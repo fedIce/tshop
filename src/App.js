@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import Home from './Screens/Store/Home';
 import ProductPage from './Screens/Store/ProductPage';
 import HomeScreen from './Screens/Store/Home/home';
@@ -31,6 +31,8 @@ function App(props) {
                                 <Route path="/shop/:category" element={<ProductCategoryPage />} />
                                 <Route path="/cart" element={<CartPage />} />
                             </Route>
+
+                            <Route path="/tshop" element={ <Navigate to="/home"/> }/>
 
                             <Route path="/signin" element={
                                 <RequireNoAuth>
