@@ -1,11 +1,11 @@
-# Getting Started with Create React App
+# Simple E-Commerce Front-End With One Page Dashboard By Amadi Chinonso Freedom 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Linkedin : https://www.linkedin.com/in/amadi-chinomso
 
-## Available Scripts
+To Install project dependencies
+### `npm install`
 
-In the project directory, you can run:
-
+Run Project development server
 ### `npm start`
 
 Runs the app in the development mode.\
